@@ -1,0 +1,70 @@
+version: "3.8"
+
+services:
+  # PostgreSQL for Laravel
+  postgres:
+    image: postgres:13
+    container_name: pgsql
+    environment:
+      POSTGRES_DB: leads_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: beruang123
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  # MySQL for WordPress
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: leadform
+    volumes:
+      - mysqldata:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  # Redis for caching
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  # Laravel backend
+  laravel:
+    build:
+      context: ./lead-api
+    container_name: laravel
+    working_dir: /var/www
+    volumes:
+      - ./lead-api:/var/www
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "8000:8000"
+    command: php artisan serve --host=0.0.0.0 --port=8000
+
+  # WordPress frontend
+  wordpress:
+    image: wordpress:latest
+    container_name: wp
+    depends_on:
+      - mysql
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: ""
+      WORDPRESS_DB_NAME: leadform
+    volumes:
+      - ./lead-wp:/var/www/html
+
+volumes:
+  pgdata:
+  mysqldata:
