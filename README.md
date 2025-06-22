@@ -48,7 +48,7 @@ Or use Docker (optional).
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/lead-management-system.git
+git clone https://github.com/syauri04/test-cast-lead.git
 cd lead-management-system
 ```
 
