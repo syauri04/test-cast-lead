@@ -1,4 +1,4 @@
-# 🧩 Lead Management System
+# 🧩 Full-Stack Developer Interview Test Case
 
 A full-stack lead collection and management system built for the Full-Stack Developer Interview Test Case.
 
