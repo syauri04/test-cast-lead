@@ -43,18 +43,23 @@ jobs:
           extensions: pdo_pgsql
 
       - name: Install Dependencies
+        working-directory: lead-api
         run: composer install --no-progress --prefer-dist
 
       - name: Copy .env
+        working-directory: lead-api
         run: cp .env.example .env
 
       - name: Generate App Key
+        working-directory: lead-api
         run: php artisan key:generate
 
       - name: Run Migrations
+        working-directory: lead-api
         run: php artisan migrate --force
 
       - name: Run Tests (Pest or PHPUnit)
+        working-directory: lead-api
         run: php artisan test
 
       - name: Deploy to VPS via SSH
