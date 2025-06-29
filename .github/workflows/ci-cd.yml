@@ -54,6 +54,10 @@ jobs:
         working-directory: lead-api
         run: php artisan key:generate
 
+      - name: Clear Config Cache
+        working-directory: lead-api
+        run: php artisan config:clear
+
       - name: Run Migrations
         working-directory: lead-api
         run: php artisan migrate --force
